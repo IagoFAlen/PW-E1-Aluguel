@@ -6,9 +6,12 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,11 +21,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 /**
@@ -66,15 +68,24 @@ public class Condominio implements Serializable{
                                                             nullable = false))
     private Set<Recurso> recursos = new HashSet<>();
     
-    @NotNull(message = "A unidade condominial deve ser informada")
-    @ManyToOne
-    @JoinColumn(name = "unidadecondominial", referencedColumnName = "id", nullable = false)
-    private UnidadeCondominial unidadecondominial;
+    @OneToMany(mappedBy = "condominio", cascade = CascadeType.ALL,
+                            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<UnidadeCondominial> unidadescondominiais = new ArrayList<>();
     
     public Condominio(){
         
     }
 
+    public void adicionarUnidadeCondominial(UnidadeCondominial obj){
+        obj.setCondominio(this);
+        this.unidadescondominiais.add(obj);
+    }
+    
+    public void removerUnidadeCondominial(int index){
+        this.unidadescondominiais.remove(index);
+    }
+    
+    
     /**
      * @return the id
      */
@@ -185,17 +196,17 @@ public class Condominio implements Serializable{
     }
 
     /**
-     * @return the unidadecondominial
+     * @return the unidadescondominiais
      */
-    public UnidadeCondominial getUnidadecondominial() {
-        return unidadecondominial;
+    public List<UnidadeCondominial> getUnidadescondominiais() {
+        return unidadescondominiais;
     }
 
     /**
-     * @param unidadecondominial the unidadecondominial to set
+     * @param unidadescondominiais the unidadescondominiais to set
      */
-    public void setUnidadecondominial(UnidadeCondominial unidadecondominial) {
-        this.unidadecondominial = unidadecondominial;
+    public void setUnidadescondominiais(List<UnidadeCondominial> unidadescondominiais) {
+        this.unidadescondominiais = unidadescondominiais;
     }
-    
+
 }

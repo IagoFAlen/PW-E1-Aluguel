@@ -6,19 +6,14 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -57,22 +52,16 @@ public class UnidadeCondominial implements Serializable{
     @JoinColumn(name = "proprietario", referencedColumnName = "id", nullable = false)
     private Pessoa proprietario;
 
-    @OneToMany(mappedBy = "unidadecondominial", cascade = CascadeType.ALL,
-                            orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Condominio> condominios = new ArrayList<>();
+    @NotNull(message = "O condomínio deve ser informado")
+    @ManyToOne
+    @JoinColumn(name = "condominio", referencedColumnName = "id", nullable = false)
+    private Condominio condominio;
     
     public UnidadeCondominial(){
         
     }
     
-    public void adicionarCondominio(Condominio obj){
-        obj.setUnidadecondominial(this);
-        this.condominios.add(obj);
-    }
     
-    public void removerCondominio(int index){
-        this.condominios.remove(index);
-    }
     /**
      * @return the id
      */
@@ -183,17 +172,19 @@ public class UnidadeCondominial implements Serializable{
     }
 
     /**
-     * @return the condominios
+     * @return the condominio
      */
-    public List<Condominio> getCondominios() {
-        return condominios;
+    public Condominio getCondominio() {
+        return condominio;
     }
 
     /**
-     * @param condominios the condominios to set
+     * @param condominio the condominio to set
      */
-    public void setCondominios(List<Condominio> condominios) {
-        this.condominios = condominios;
+    public void setCondominio(Condominio condominio) {
+        this.condominio = condominio;
     }
+
+    
     
 }

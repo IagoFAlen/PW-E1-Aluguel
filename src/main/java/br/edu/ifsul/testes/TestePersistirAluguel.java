@@ -36,7 +36,7 @@ public class TestePersistirAluguel {
         a.setInicioContrato(Calendar.getInstance());
         a.setLocatario(l);
         a.setUnidadecondominial(em.find(UnidadeCondominial.class, 1));
-        a.setMensalidade(em.find(Mensalidades.class, 1));
+        
         
         em.getTransaction().begin();
         em.persist(a);

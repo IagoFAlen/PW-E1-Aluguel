@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.testes;
 
+import br.edu.ifsul.modelo.Condominio;
 import br.edu.ifsul.modelo.Pessoa;
 import br.edu.ifsul.modelo.UnidadeCondominial;
 import javax.persistence.EntityManager;
@@ -31,6 +32,8 @@ public class TestePersistirUnidadeCondominial {
         u.setNumero("291");
         u.setNumeroQuarto(42);
         u.setProprietario(em.find(Pessoa.class, 1));
+        u.setCondominio(em.find(Condominio.class, 1));
+        
         
         em.getTransaction().begin();
         em.persist(u);

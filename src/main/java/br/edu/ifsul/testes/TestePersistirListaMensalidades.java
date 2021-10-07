@@ -5,8 +5,8 @@
  */
 package br.edu.ifsul.testes;
 
-import br.edu.ifsul.modelo.Locatario;
-import br.edu.ifsul.modelo.Pessoa;
+import br.edu.ifsul.modelo.Aluguel;
+import br.edu.ifsul.modelo.Mensalidades;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,7 +15,7 @@ import javax.persistence.Persistence;
  *
  * @author Iago Figueira
  */
-public class TesteAlterarLocatario {
+public class TestePersistirListaMensalidades {
 
     /**
      * @param args the command line arguments
@@ -25,18 +25,13 @@ public class TesteAlterarLocatario {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PW-E1-IagoFigueiraPU");
         EntityManager em = emf.createEntityManager();
         
-        Locatario l = em.find(Locatario.class, 2);
-        Pessoa p = em.find(Pessoa.class, 1);
-        l.setLocalTrabalho("Sony");
-        l.setRenda(9999999.00);
-        l.setTelefoneTrabalho("98765432222221");
-        l.setNome(p.getNome());
-        l.setCpf(p.getCpf());
-        l.setEmail(p.getEmail());
-        l.setTelefone(p.getTelefone());
+        Mensalidades m = em.find(Mensalidades.class, 1);
+        Aluguel a = em.find(Aluguel.class, 1);
+        
+        a.adicionarMensalidades(m);
         
         em.getTransaction().begin();
-        em.merge(l);
+        em.persist(a);
         em.getTransaction().commit();
         em.close();
         emf.close();

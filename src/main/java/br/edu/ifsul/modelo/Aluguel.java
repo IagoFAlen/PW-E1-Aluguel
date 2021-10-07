@@ -6,15 +6,20 @@
 package br.edu.ifsul.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Objects;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -59,15 +64,23 @@ public class Aluguel implements Serializable{
     @JoinColumn(name = "unidadecondominial", referencedColumnName = "id", nullable = false)
     private UnidadeCondominial unidadecondominial;
     
-    @NotNull(message = "A mensalidade deve ser informada")
-    @ManyToOne
-    @JoinColumn(name = "mensalidade", referencedColumnName = "id", nullable = false)
-    private Mensalidades mensalidade;
+    @OneToMany(mappedBy = "aluguel", cascade = CascadeType.ALL,
+                          orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Mensalidades> mensalidades = new ArrayList<>();
     
     public Aluguel(){
         
     }
-
+    
+    public void adicionarMensalidades(Mensalidades obj){
+        obj.setAluguel(this);
+        this.getMensalidades().add(obj);
+    }
+    
+    public void removerMensalidades(int index){
+        this.getMensalidades().remove(index);
+    }
+    
     /**
      * @return the id
      */
@@ -192,17 +205,17 @@ public class Aluguel implements Serializable{
     }
 
     /**
-     * @return the mensalidade
+     * @return the mensalidades
      */
-    public Mensalidades getMensalidade() {
-        return mensalidade;
+    public List<Mensalidades> getMensalidades() {
+        return mensalidades;
     }
 
     /**
-     * @param mensalidade the mensalidade to set
+     * @param mensalidades the mensalidades to set
      */
-    public void setMensalidade(Mensalidades mensalidade) {
-        this.mensalidade = mensalidade;
+    public void setMensalidades(List<Mensalidades> mensalidades) {
+        this.mensalidades = mensalidades;
     }
     
     

@@ -15,7 +15,7 @@ import javax.persistence.Persistence;
  *
  * @author Iago Figueira
  */
-public class TesteRemoverListaCondominios {
+public class TestePersistirListaUnidadeCondominial {
 
     /**
      * @param args the command line arguments
@@ -28,10 +28,10 @@ public class TesteRemoverListaCondominios {
         UnidadeCondominial u = em.find(UnidadeCondominial.class, 1);
         Condominio c = em.find(Condominio.class, 1);
         
-        u.removerCondominio(1);
+        c.adicionarUnidadeCondominial(u);
         
         em.getTransaction().begin();
-        em.merge(u);
+        em.persist(c);
         em.getTransaction().commit();
         em.close();
         emf.close();

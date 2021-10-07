@@ -5,8 +5,9 @@
  */
 package br.edu.ifsul.testes;
 
-import br.edu.ifsul.modelo.Pessoa;
-import br.edu.ifsul.modelo.UnidadeCondominial;
+
+import br.edu.ifsul.modelo.Permissao;
+import br.edu.ifsul.modelo.Usuario;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,28 +16,24 @@ import javax.persistence.Persistence;
  *
  * @author Iago Figueira
  */
-public class TesteAlterarUnidadeCondominial {
+public class TestePersistirPermissoes {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PW-E1-IagoFigueiraPU");
         EntityManager em = emf.createEntityManager();
-        
-        UnidadeCondominial u = em.find(UnidadeCondominial.class, 1);
-        u.setArea(7000.14);
-        u.setDescricao("Descrição 2 da unidade condominial");
-        u.setNumero("300");
-        u.setNumeroQuarto(7);
-        u.setProprietario(em.find(Pessoa.class, 1));
-        
+        Usuario u = em.find(Usuario.class, "iagofigueira");
+        Permissao p1 = em.find(Permissao.class, "ADMINISTRADOR");
+        Permissao p2 = em.find(Permissao.class, "USUARIO");
+        u.getPermissoes().add(p1);
+        u.getPermissoes().add(p2);
         em.getTransaction().begin();
-        em.merge(u);
+        em.merge(u);        
         em.getTransaction().commit();
         em.close();
-        emf.close();
+        emf.close();                        
     }
-    
+
 }

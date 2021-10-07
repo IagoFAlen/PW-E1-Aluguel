@@ -5,6 +5,7 @@
  */
 package br.edu.ifsul.testes;
 
+import br.edu.ifsul.modelo.Aluguel;
 import br.edu.ifsul.modelo.Mensalidades;
 import java.util.Calendar;
 import javax.persistence.EntityManager;
@@ -30,7 +31,7 @@ public class TestePersistirMensalidades {
         m.setDataPagamento(Calendar.getInstance());
         m.setVencimento(Calendar.getInstance());
         m.setValorPagamento(2000.21);
-        
+        m.setAluguel(em.find(Aluguel.class, 1));
         
         em.getTransaction().begin();
         em.persist(m);

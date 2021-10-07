@@ -5,8 +5,7 @@
  */
 package br.edu.ifsul.testes;
 
-import br.edu.ifsul.modelo.Condominio;
-import br.edu.ifsul.modelo.Recurso;
+import br.edu.ifsul.modelo.Permissao;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,25 +14,29 @@ import javax.persistence.Persistence;
  *
  * @author Iago Figueira
  */
-public class TesteAlterarRecursos {
+public class TestePersistirPermissao {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("PW-E1-IagoFigueiraPU");
         EntityManager em = emf.createEntityManager();
-        
-        Condominio c = em.find(Condominio.class, 1);
-        Recurso r = em.find(Recurso.class, 1);
-        c.getRecursos().add(r);
-        
+        Permissao admin = new Permissao();
+        admin.setNome("ADMINISTRADOR");
+        admin.setDescricao("Permissão com poderes irrestritos");
+        Permissao user = new Permissao();
+        user.setNome("USUARIO");
+        user.setDescricao("Permissão comum");        
         em.getTransaction().begin();
-        em.merge(c);
+        em.persist(admin);
+        em.persist(user);
         em.getTransaction().commit();
         em.close();
         emf.close();
+        
+        
+        
     }
-    
+
 }

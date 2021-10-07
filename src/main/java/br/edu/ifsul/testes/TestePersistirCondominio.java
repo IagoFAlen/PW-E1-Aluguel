@@ -30,7 +30,6 @@ public class TestePersistirCondominio {
         c.setNumero("291");
         c.setEndereco("Rua principal");
         c.setCep("23900-000");
-        c.setUnidadecondominial(em.find(UnidadeCondominial.class, 1));
         
         em.getTransaction().begin();
         em.persist(c);
